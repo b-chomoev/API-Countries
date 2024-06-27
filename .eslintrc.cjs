@@ -15,5 +15,6 @@ module.exports = {
       { allowConstantExport: true },
     ],
     'semi': ['error', 'always'],
+    'react-hooks/exhaustive-deps': 'error',
   },
 }

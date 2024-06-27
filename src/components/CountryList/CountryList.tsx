@@ -1,33 +1,39 @@
 import React, {useCallback, useEffect, useState} from "react";
 import axios from 'axios';
-import {ApiCountryList} from "../../types";
 
-interface Props {
+export interface ApiCountryList {
+  name: string;
   alpha3Code: string;
 }
 
-const CountryList: React.FC<Props> = ({alpha3Code}) => {
+interface Props {
+  onSelect: (alpha3code: string) => void;
+}
+
+const CountryList: React.FC<Props> = ({onSelect}) => {
   const [countries, setCountries] = useState<null | ApiCountryList[]>([]);
 
   const fetchCountryList = useCallback(async () => {
-    if (alpha3Code !== null) {
       const {data: list} = await axios.get<ApiCountryList[]>('https://restcountries.com/v2/all?fields=alpha3Code,name');
 
       setCountries(list);
-      console.log(list);
-    }
-  }, [alpha3Code]);
+  }, []);
 
   useEffect(() => {
     void fetchCountryList();
   }, [fetchCountryList]);
 
+  const selectCountry = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedAlpha3Code = e.target.value;
+    onSelect(selectedAlpha3Code);
+  };
+
   return countries && (
     <div>
-      <select className="form-select form-select-lg" aria-label=".form-select-lg example">
-        <option>Choose one of the country</option>
+      <select className="form-select form-select-lg" aria-label=".form-select-lg example" onChange={selectCountry}>
+        <option value="">Choose one of the countries</option>
         {countries.map((country) => (
-          <option key={country.alpha3Code} value={country.name}>
+          <option key={country.alpha3Code} value={country.alpha3Code}>
             {country.name}
           </option>
         ))}
