@@ -1,10 +1,6 @@
 import React, {useCallback, useEffect, useState} from "react";
 import axios from 'axios';
-
-export interface ApiCountryList {
-  name: string;
-  alpha3Code: string;
-}
+import {ApiCountryList} from "../../types";
 
 interface Props {
   onSelect: (alpha3code: string) => void;

@@ -1,13 +1,7 @@
 import React, {useEffect, useState} from "react";
+import './CountryDetails.css';
 import axios from "axios";
-
-export interface Country {
-  name: string;
-  capital: string;
-  region: string;
-  population: number;
-  borders: string[];
-}
+import {Country} from "../../types";
 
 interface CountryDetailsProps {
   alpha3Code: string;
@@ -33,19 +27,24 @@ const CountryDetails: React.FC<CountryDetailsProps> = ({alpha3Code}) => {
       }
     };
 
-    if (alpha3Code) {
       void fetchCountryDetails();
-    }
   }, [alpha3Code]);
 
   return (
-    <div>
-      {country ? (
+    <>
+      {country && (
         <div>
-          <h1>{country.name}</h1>
-          <p>Capital: {country.capital}</p>
-          <p>Region: {country.region}</p>
-          <p>Population: {country.population}</p>
+          <div className="d-flex justify-content-between">
+            <div>
+              <h1>{country.name}</h1>
+              <p>Capital: {country.capital}</p>
+              <p>Region: {country.region}</p>
+              <p>Population: {country.population}</p>
+            </div>
+            <div className='pe-5'>
+              <img src={country.flag} alt="" className="countryFlag rounded"/>
+            </div>
+          </div>
           {borderCountries && (
             <div>
               <h3>Bordering Countries:</h3>
@@ -57,10 +56,8 @@ const CountryDetails: React.FC<CountryDetailsProps> = ({alpha3Code}) => {
             </div>
           )}
         </div>
-      ) : (
-        <p>Loading...</p>
       )}
-    </div>
+    </>
   );
 };
 
